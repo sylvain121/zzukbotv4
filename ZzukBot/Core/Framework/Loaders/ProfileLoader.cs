@@ -47,11 +47,36 @@ namespace ZzukBot.Core.Framework.Loaders
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+
+                string content = new StreamReader(ofd.FileName).ReadToEnd();
+                var profile = JsonConvert.DeserializeObject<ProfileModel>(content);
+
+                Hotspots = new List<Location>();
+                if(profile.Hotspots != null)
+                {
+                    foreach (var hotspot in profile.Hotspots)
+                        Hotspots.Add(new Location(hotspot.X, hotspot.Y, hotspot.Z));
+                }
+                
+                VendorHotspots = new List<Location>();
+                if(profile.VendorHotspots != null)
+                {
+                    foreach (var vendorHotspot in profile.VendorHotspots)
+                        VendorHotspots.Add(new Location(vendorHotspot.X, vendorHotspot.Y, vendorHotspot.Z));
+                }
+                
+                if(profile.VendorName != null)
+                {
+                    VendorName = profile.VendorName;
+                }
+                
+
+                /*
                 using (var sw = new StreamReader(ofd.FileName))
                 {
                     var username = sw.ReadLine();
                     new SslProfileClientAsync(username, sw.ReadToEnd()).StartClient(out string json);
-                    var profile = JsonConvert.DeserializeObject<ProfileModel>(json);
+                    var profile = JsonConvert.DeserializeObject<ProfileModel>(sw.ReadToEnd());
 
                     Hotspots = new List<Location>();
                     foreach (var hotspot in profile.Hotspots)
@@ -60,7 +85,7 @@ namespace ZzukBot.Core.Framework.Loaders
                     foreach (var vendorHotspot in profile.VendorHotspots)
                         VendorHotspots.Add(new Location(vendorHotspot.X, vendorHotspot.Y, vendorHotspot.Z));
                     VendorName = profile.VendorName;
-                }
+                }*/
             }
         }
 

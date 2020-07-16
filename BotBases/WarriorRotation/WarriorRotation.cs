@@ -36,12 +36,14 @@ namespace WarriorRotation
 
         void Pulse()
         {
+            Console.WriteLine("starting pulse");
             ObjectManager.Instance.Player.AntiAfk();
             tt = new TreeTask(100, new List<List<TreeTask>>() { TTS.collection, });
             if (tt.Activate())
                 tt.Execute();
             if (running) return;
             stopCallback();
+            Console.WriteLine("stopping");
             MainThread.Stop();
         }
 
@@ -60,6 +62,7 @@ namespace WarriorRotation
 
         public bool Start(Action stopCallback)
         {
+            Console.WriteLine(" Starting Warrior rotation");
             if (running) return false;
             if (!ObjectManager.Instance.IsIngame) return false;
             if (ObjectManager.Instance.Player == null) return false;
@@ -67,6 +70,7 @@ namespace WarriorRotation
             if (ObjectManager.Instance.Player.Class != Enums.ClassId.Warrior) return false;
             running = true;
             this.stopCallback = stopCallback;
+            Console.WriteLine("Lunching main thread");
             MainThread.Start();
             return running;
         }

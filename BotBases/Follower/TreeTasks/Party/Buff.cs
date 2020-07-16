@@ -18,7 +18,7 @@ namespace Follower.TreeTasks.Party
 
         public override void Execute()
         {
-            Common.Instance.DebugMessage("BUFF");
+            Common.Instance.DebugMessage("=================== BUFF ============================");
             ObjectManager.Instance.Player.SetTarget(ObjectManager.Instance.Player);
             CustomClasses.Instance.Current.Rebuff();
             CustomClasses.Instance.Current.TryToBuffAnotherPlayer(ObjectManager.Instance.Player);

@@ -169,12 +169,7 @@ namespace ProfileCreator.GUI
             {
                 using (var sw = new StreamWriter(sfd.FileName))
                 {
-                    sw.WriteLine(UserProfile.UserName);
-                    sw.Write(
-                        Cryptography.EncryptStringAES(
-                            JsonConvert.SerializeObject(
-                                new ProfileModel() { Hotspots = Hotspots, VendorHotspots = VendorHotspots, VendorName = VendorName }, Formatting.Indented),
-                            UserProfile.Id));
+                    sw.Write(JsonConvert.SerializeObject(new ProfileModel() { Hotspots = Hotspots, VendorHotspots = VendorHotspots, VendorName = VendorName }, Formatting.Indented));
                 }
             }
         }

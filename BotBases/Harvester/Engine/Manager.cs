@@ -35,6 +35,7 @@ namespace Harvester.Engine
                 if (!ObjectManager.IsIngame) return false;
                 if (ObjectManager.Player == null) return false;
                 try { if (ProfileLoader.Hotspots == null) return false; } catch { return false; }
+                Console.WriteLine("Loading custom class");
                 if (!CCLoader.LoadCustomClass(ObjectManager.Player.Class)) return false;
                 running = true;
             }
@@ -51,6 +52,7 @@ namespace Harvester.Engine
 
         void Pulse()
         {
+            Console.WriteLine("pulse");
             ObjectManager.Player.AntiAfk();
             Controller.Behavior();
             if (running) return;

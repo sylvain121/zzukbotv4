@@ -124,7 +124,12 @@ namespace Grinder.Engine.Modules
 
         public WoWUnit RepairNPCFromProfile()
         {
-            return ObjectManager.Npcs.Where(x => x.Name == ProfileLoader.VendorName).FirstOrDefault();
+            if(ProfileLoader.VendorName != null)
+            {
+                return ObjectManager.Npcs.Where(x => x.Name == ProfileLoader.VendorName).FirstOrDefault();
+            }
+            return null;
+            
         }
 
         public bool UnitInHotspots(WoWUnit unit, List<Location> hotspots, int searchRadius)

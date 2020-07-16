@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using ZzukBot.Core.Game.Objects;
-using ZzukBot.Core.Utilities.Helpers;
 
 namespace ProfileConverter.GUI
 {
@@ -43,25 +42,33 @@ namespace ProfileConverter.GUI
                 VendorName = string.Empty
             };
 
-            foreach (var hotspot in profile.Hotspots)
-                model.Hotspots.Add(new Location(hotspot.X, hotspot.Y, hotspot.Z));
-            foreach (var vendorHotspot in profile.VendorHotspots)
-                model.VendorHotspots.Add(new Location(vendorHotspot.X, vendorHotspot.Y, vendorHotspot.Z));
-            model.VendorName = profile.Repair.Name;
+            if(profile.Hotspots != null)
+            {
+                foreach (var hotspot in profile.Hotspots)
+                    model.Hotspots.Add(new Location(hotspot.X, hotspot.Y, hotspot.Z));
+            }
+            if(profile.VendorHotspots != null)
+            {
+                foreach (var vendorHotspot in profile.VendorHotspots)
+                    model.VendorHotspots.Add(new Location(vendorHotspot.X, vendorHotspot.Y, vendorHotspot.Z));
+            }
+            if(profile.Repair.Name != null)
+            {
+                model.VendorName = profile.Repair.Name;
+            }
 
             var sfd = new SaveFileDialog
             {
-                Filter = "JSON files (*.json)|*.json"
+                Filter = "JSON files (*.json)|*.json",
+                FileName = ofd.FileName   
             };
+            
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 using (var sw = new StreamWriter(sfd.FileName))
                 {
-                    sw.WriteLine("zzukbot");
-                    sw.Write(
-                        Cryptography.EncryptStringAES(
-                            JsonConvert.SerializeObject(model, Formatting.Indented), "cc2aeb2e-4022-4f80-b631-d1b8529e042c"));
+                    sw.Write(JsonConvert.SerializeObject(model, Formatting.Indented));
                 }
             }
         }

@@ -30,7 +30,8 @@ namespace Harvester.Engine.Loaders.Profile
         {
             string content = new StreamReader(fileName).ReadToEnd();
             if (profileExtension == ProfileExtension.XML)
-                content = ConvertXmlToJson(profileName, content, profileType);
+                throw new Exception("unsuported xml");
+            Console.WriteLine("converting to OBject");
             return JsonConvert.DeserializeObject<ProfileData>(content);
         }
 

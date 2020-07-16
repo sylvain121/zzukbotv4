@@ -88,7 +88,7 @@ namespace Priest.Engine
                 {
                     ObjectManager.Player.SetTarget(primaryTarget);
                     ObjectManager.Player.Face(primaryTarget);
-                    
+
                     if (ObjectManager.Player.CastingId == 0 && Spell.GCDReady("Smite", "Shadow Word: Pain", "Power Word: Fortitude"))
                     {
                         Rebuff();
@@ -166,19 +166,37 @@ namespace Priest.Engine
                 if (Spell.IsKnown("Flash Heal"))
                 {
                     if (ObjectManager.Player.HealthPercent > 70)
+                    {
+                        ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
                         Spell.Cast("Lesser Heal");
+                    }
                     else
+                    {
+                        ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
                         Spell.Cast("Flash Heal");
+                    }
                 }
                 else if (Spell.IsKnown("Heal"))
                 {
                     if (ObjectManager.Player.HealthPercent > 70)
+                    {
+                        ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
                         Spell.Cast("Lesser Heal");
+
+                    }
                     else
+                    {
+
+                        ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
                         Spell.Cast("Heal");
+                    }
                 }
                 else if (Spell.IsKnown("Lesser Heal"))
+                {
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
                     Spell.Cast("Lesser Heal");
+
+                }
             }
         }
 
@@ -204,7 +222,7 @@ namespace Priest.Engine
             /*if (Spell.IsKnown("Holy Fire") && Spell.IsReady("Holy Fire"))
                 Spell.Cast("Holy Fire");
             else*/
-                Rotation();
+            Rotation();
 
             if (ObjectManager.Player.CastingId == 0)
             {
@@ -215,31 +233,42 @@ namespace Priest.Engine
 
         public void Rebuff()
         {
+
+            Common.Instance.DebugMessage("===================  RE BUFF ============================");
             if (!ObjectManager.Player.IsInCombat)
             {
                 if (Spell.IsKnown("Power Word: Fortitude") && !ObjectManager.Player.GotAura("Power Word: Fortitude"))
-                    Spell.Cast("Power Word: Fortitude");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Power Word: Fortitude");
                 if (Spell.IsKnown("Divine Spirit") && !ObjectManager.Player.GotAura("Divine Spirit"))
-                    Spell.Cast("Divine Spirit");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Divine Spirit");
                 if (Spell.IsKnown("Shadow Protection") && !ObjectManager.Player.GotAura("Shadow Protection"))
-                    Spell.Cast("Shadow Protection");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Shadow Protection");
                 if (Spell.IsKnown("Inner Fire") && !ObjectManager.Player.GotAura("Inner Fire"))
-                    Spell.Cast("Inner Fire");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Inner Fire");
             }
             else
             {
                 if (Spell.IsKnown("Power Word: Shield") && Spell.IsReady("Power Word: Shield") &&
                     !ObjectManager.Player.GotAura("Power Word: Shield") && !ObjectManager.Player.GotDebuff("Weakened Soul"))
-                    Spell.Cast("Power Word: Shield");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Power Word: Shield");
                 if (Spell.IsKnown("Inner Fire") && !ObjectManager.Player.GotAura("Inner Fire"))
-                    Spell.Cast("Inner Fire");
+                    ObjectManager.Player.SetTarget(ObjectManager.Instance.Player);
+                Spell.Cast("Inner Fire");
             }
         }
 
-        bool ShouldStopWand { get => !(ObjectManager.Player.ManaPercent < 20 || ObjectManager.Target.HealthPercent < 10) &&
-                (Spell.IsKnown("Power Word: Shield") && !ObjectManager.Player.GotAura("Power Word: Shield") && !ObjectManager.Player.GotDebuff("Weakened Soul")) ||
-                (ObjectManager.Player.HealthPercent < 80 && Spell.IsKnown("Renew") && !ObjectManager.Player.GotAura("Renew")) ||
-                (Spell.IsKnown("Shadow Word: Pain") && !ObjectManager.Target.GotDebuff("Shadow Word: Pain")); }
+        bool ShouldStopWand
+        {
+            get => !(ObjectManager.Player.ManaPercent < 20 || ObjectManager.Target.HealthPercent < 10) &&
+(Spell.IsKnown("Power Word: Shield") && !ObjectManager.Player.GotAura("Power Word: Shield") && !ObjectManager.Player.GotDebuff("Weakened Soul")) ||
+(ObjectManager.Player.HealthPercent < 80 && Spell.IsKnown("Renew") && !ObjectManager.Player.GotAura("Renew")) ||
+(Spell.IsKnown("Shadow Word: Pain") && !ObjectManager.Target.GotDebuff("Shadow Word: Pain"));
+        }
 
         void Rotation()
         {

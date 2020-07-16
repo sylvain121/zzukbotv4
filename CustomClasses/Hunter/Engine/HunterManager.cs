@@ -243,8 +243,10 @@ namespace Hunter.Engine
                 var targettingPlayer = PossibleTargets.Where(x => x.TargetGuid == ObjectManager.Player.Guid);
                 if (targettingPlayer.Any())
                 {
+                    ObjectManager.Player.SetTarget(currentTarget);
                     if (ObjectManager.Pet.TargetGuid != targettingPlayer.FirstOrDefault().Guid)
                     {
+                    ObjectManager.Player.SetTarget(currentTarget);
                         ObjectManager.Player.SetTarget(targettingPlayer.FirstOrDefault());
                         ObjectManager.Pet.Attack();
                         ObjectManager.Player.SetTarget(currentTarget);
@@ -254,6 +256,7 @@ namespace Hunter.Engine
                     ObjectManager.Pet.Attack();
                 if (ObjectManager.Target.DistanceToPlayer > 11f)
                 {
+                    ObjectManager.Player.SetTarget(currentTarget);
                     ShouldMelee = false;
                     if (Spell.IsKnown("Aspect of the Hawk") && !ObjectManager.Player.GotAura("Aspect of the Hawk"))
                         Spell.Cast("Aspect of the Hawk");
@@ -274,6 +277,7 @@ namespace Hunter.Engine
                 }
                 else if (ObjectManager.Target.DistanceToPlayer < 11f && ObjectManager.Target.TargetGuid == ObjectManager.Player.Guid)
                 {
+                    ObjectManager.Player.SetTarget(currentTarget);
                     ShouldMelee = true;
                     if (Spell.IsReady("Raptor Strike"))
                         Spell.Cast("Raptor Strike");
@@ -282,6 +286,7 @@ namespace Hunter.Engine
                 }
                 else
                 {
+                    ObjectManager.Player.SetTarget(currentTarget);
                     ShouldMelee = false;
                     Navigation.Backup(12f);
                 }
