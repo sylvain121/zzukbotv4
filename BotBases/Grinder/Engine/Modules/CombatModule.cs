@@ -2,6 +2,7 @@
 using ZzukBot.Core.Framework;
 using ZzukBot.Core.Game.Objects;
 using ZzukBot.Core.Game.Statics;
+using System.Collections.Generic;
 
 namespace Grinder.Engine.Modules
 {
@@ -23,7 +24,12 @@ namespace Grinder.Engine.Modules
 
         public void Fight()
         {
-            if (ObjectManager.Units.Count() > 0)
+            var unit = PartyMembers.Where(x => x != null && x.IsInCombat);
+            if (unit != null)
+            {
+                CustomClasses.Current.Fight(unit);
+            }
+            else if (ObjectManager.Units.Count() > 0)
                 CustomClasses.Current.Fight(ObjectManager.Units.Where(x => x.IsInCombat || x.GotDebuff("Polymorph")));
         }
 
@@ -52,5 +58,18 @@ namespace Grinder.Engine.Modules
         {
             CustomClasses.Current.Rebuff();
         }
+
+
+        List<WoWUnit> PartyMembers =>
+            new List<WoWUnit>()
+            {
+                ObjectManager.Instance.PartyLeader,
+                ObjectManager.Instance.Party1,
+                ObjectManager.Instance.Party2,
+                ObjectManager.Instance.Party3,
+                ObjectManager.Instance.Party4,
+                ObjectManager.Instance.Player
+            };
+
     }
 }
